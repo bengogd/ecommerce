@@ -3,32 +3,11 @@ from datetime import datetime
 from django.urls import reverse
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=200,
-                            db_index=True)
-    slug = models.SlugField(max_length=200,
-                            unique=True)
-
-    class Meta:
-        ordering = ('name',)
-        verbose_name = 'category'
-        verbose_name_plural = 'categories'
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-            return reverse('shop:product_list_by_category',
-                           args=[self.slug])
-
 class Listing(models.Model):
-    category = models.ForeignKey(Category,
-                                 related_name='products',
-                                 on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     seller_name = models.CharField(max_length=200, db_index=True)
     city = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
+    closest_landmark = models.CharField(max_length=50)
     description = models.TextField(blank=True) #Optional description, no max length
     price = models.IntegerField()
     photo_main = models.ImageField(upload_to='photos/%Y/%m/%d/') #Save inside media folder under date structure

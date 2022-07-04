@@ -1,8 +1,10 @@
+from multiprocessing import context
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
+
 from .models import Listing
 
-#main view
 def index(request):
     listings = Listing.objects.order_by('-list_date').filter(is_published=True) #get all published listings, ordered by newest first
 
@@ -16,9 +18,8 @@ def index(request):
 
     return render(request, 'index.html', context)
 
-#detail view
-def listing(request, listing_id):
-    listing = get_object_or_404(Listing, pk=listing_id) #Return 404 error if no object found
+def product_detail_view(request, product_id):
+    listing = get_object_or_404(Listing, pk=product_id) #Return 404 error if no object found
     other_images = []
     
     # iterate over photo_1 up to but not including photo_7 (doesn't exist)
@@ -39,4 +40,3 @@ def listing(request, listing_id):
         'other_images': other_images
     }
     return render(request, 'detail.html', context=context)
-
